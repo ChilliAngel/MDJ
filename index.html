@@ -398,7 +398,11 @@
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      headerToolbar: false, // Supprime la barre de navigation
+      headerToolbar: {
+		  left: 'prev,next today',
+		  center: 'title',
+		  right: 'dayGridMonth,timeGridWeek,listWeek'
+		},
       locale: 'fr',         // Active la langue française
       eventSources: [
 		{
