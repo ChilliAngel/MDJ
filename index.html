@@ -8,12 +8,9 @@
 		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="assets/css/main.css">
-		<!-- FullCalendar CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet" />
-		<!-- FullCalendar JS -->
-		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
-		<!-- Google Calendar Plugin -->
-		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.17/index.global.min.css" rel="stylesheet" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.17/index.global.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.17/google-calendar.global.min.js"></script>
 	</head>
 	<body>
 		<!-- Loader -->
@@ -95,15 +92,17 @@
 				</section>
 
 			<!-- Two -->
-				<section class="wrapper ">
-					<div class="inner">
-						<header class="align-center">
-							<h2>Aliquam ipsum purus dolor</h2>
-							<p>Cras sagittis turpis sit amet est tempus, sit amet consectetur purus tincidunt.</p>
-						</header>
+				<section class="wrapper">
+						<div class="inner">
+							<header class="align-center">
+								<h2>Agenda des événements</h2>
+								<p>Découvrez les prochaines activités de Chez Zelle!</p>
+							</header>
 
-						<!-- Calendrier -->
+							<!-- Conteneur du calendrier -->
 							<div id="calendar"></div>
+
+							<!-- Style optionnel -->
 							<style>
 							#calendar {
 								max-width: 900px;
@@ -111,9 +110,9 @@
 								padding: 0 10px;
 							}
 							</style>
-					</div>
+
+						</div>
 				</section>
-			</div>
 
 			<!-- Three -->
 				<section class="wrapper style2">
@@ -387,64 +386,63 @@
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-			<script>
-			document.addEventListener('DOMContentLoaded', function () {
-				const calendarEl = document.getElementById('calendar');
-
-				const calendar = new FullCalendar.Calendar(calendarEl, {
-				initialView: 'dayGridMonth',
-				headerToolbar: {
-					left: 'prev,next today',
-					center: 'title',
-					right: 'dayGridMonth,timeGridWeek,listWeek'
-				},
-				events: {
-					googleCalendarApiKey: 'AIzaSyAyvtXeYlMwR0FO2kZHdZRqMZOD6bgPOKg',
-					googleCalendarId: '148262ebd96c2e163781019ee379bae2bb9b66d1589e4016139690dbb001e8ee@group.calendar.google.com'
-				},
-				eventClick: function(info) {
-					// Empêche l'ouverture dans un nouvel onglet par défaut
-					info.jsEvent.preventDefault();
-
-					// Si un lien d’inscription est présent, ouvre-le
-					if (info.event.url) {
-					window.open(info.event.url, "_blank");
-					}
-				},
-				eventMouseEnter: function(info) {
-					const tooltip = document.createElement('div');
-					tooltip.id = 'calendar-tooltip';
-					tooltip.style.position = 'absolute';
-					tooltip.style.zIndex = '10001';
-					tooltip.style.background = 'white';
-					tooltip.style.border = '1px solid #ccc';
-					tooltip.style.padding = '5px';
-					tooltip.style.fontSize = '14px';
-					tooltip.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-					tooltip.innerHTML = info.event.title;
-
-					document.body.appendChild(tooltip);
-
-					document.addEventListener('mousemove', moveTooltip);
-					function moveTooltip(e) {
-					tooltip.style.left = e.pageX + 10 + 'px';
-					tooltip.style.top = e.pageY + 10 + 'px';
-					}
-
-					info.el.addEventListener('mouseleave', () => {
-					document.body.removeChild(tooltip);
-					document.removeEventListener('mousemove', moveTooltip);
-					}, { once: true });
-				}
-				});
-
-				calendar.render();
-			});
-			</script>
-
 			<audio id="bubble_sound" preload="auto">
 				<source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/630634/bubble.mp3" type="audio/mpeg">
 				Votre navigateur ne supporte pas l'audio.
 			</audio>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,listWeek'
+      },
+      eventSources: [
+		{
+			googleCalendarApiKey: 'AIzaSyAyvtXeYlMwR0FO2kZHdZRqMZOD6bgPOKg',
+			googleCalendarId: '148262ebd96c2e163781019ee379bae2bb9b66d1589e4016139690dbb001e8ee@group.calendar.google.com'
+		}
+		],
+      eventClick: function(info) {
+        info.jsEvent.preventDefault();
+        if (info.event.url) {
+          window.open(info.event.url, "_blank");
+        }
+      },
+      eventMouseEnter: function(info) {
+        const tooltip = document.createElement('div');
+        tooltip.id = 'calendar-tooltip';
+        tooltip.style.position = 'absolute';
+        tooltip.style.zIndex = '10001';
+        tooltip.style.background = 'white';
+        tooltip.style.border = '1px solid #ccc';
+        tooltip.style.padding = '5px';
+        tooltip.style.fontSize = '14px';
+        tooltip.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+        tooltip.innerHTML = info.event.title;
+
+        document.body.appendChild(tooltip);
+
+        document.addEventListener('mousemove', moveTooltip);
+        function moveTooltip(e) {
+          tooltip.style.left = e.pageX + 10 + 'px';
+          tooltip.style.top = e.pageY + 10 + 'px';
+        }
+
+        info.el.addEventListener('mouseleave', () => {
+          document.body.removeChild(tooltip);
+          document.removeEventListener('mousemove', moveTooltip);
+        }, { once: true });
+      }
+    });
+
+    calendar.render();
+  });
+</script>
+
 	</body>
 </html>
