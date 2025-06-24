@@ -4021,3 +4021,12 @@
 		  z-index: 0;
 		  pointer-events: none; /* pour que les bulles ne bloquent pas les clics */
 		}
+#calendar {
+  overflow: hidden !important;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE/Edge */
+}
+
+#calendar::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari */
+}
